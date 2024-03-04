@@ -1,0 +1,24 @@
+version: '3.9'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql8
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - db:/var/lib/mysql
+    networks:
+      - app
+  nginx:
+    image: nginx:1.25-alpine
+    depends_on:
+      - mysql
+    container_name: nginx:1.25-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - config/
+
+
