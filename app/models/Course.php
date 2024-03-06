@@ -9,8 +9,31 @@ use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
+use OpenApi\Annotations as QA;
 
 /**
+ * @OA\Schema(
+ *   schema="Curse",
+ *   required={"char_code","vunit_rate","created_at"}
+ * ),
+ * @OA\Property(
+ *     property="char_code",
+ *     type="string",
+ *     description="Char code of valute (USD,EUR,RUB...)",
+ *     example="EUR"
+ * ),
+ * @OA\Property(
+ *     property="vunit_rate",
+ *     type="string",
+ *     description="Course currency",
+ *     example="1.08"
+ * ),
+ * @OA\Property(
+ *     property="created_at",
+ *     type="string",
+ *     description="Created date",
+ *     example="07-03-2024"
+ *  ),
  * @property string $char_code
  * @property float $vunit_rate
  * @property-read  string $created_at
@@ -31,36 +54,35 @@ class Course extends Model
 
     /**
      * Setting variables "from" and "to"
-     * @param string $from
-     * @param string $to
-     * @param float|int $val
+
      */
-    public function setFromTo(string &$from, string &$to, float|int $val)
+    public function setFromTo(ConvertForm $form): ConvertForm|bool
     {
+        $ans = true;
         /**
          * if we convert value from rubls or to
          * then we shoould set value for rubls 1 or val value for
          * correct work of formula
          */
-        if($from == "RUB" || $to == "RUB"){
-            if($from == "RUB"){
-                $from = $val;
-                $to = $this->findByCharCode($to);
-
-                $to = ($to)?$to["vunit_rate"]:false;
+        if($form->fromCharCode == "RUB" || $form->toCharCode == "RUB"){
+            if($form->fromCharCode == "RUB"){
+                $form->setFrom(1);
+                $to = $this->findByCharCode($form->toCharCode);
+                ($to)?$form->setTo((float)$to["vunit_rate"]):$ans=false;
             } else {
-                $to = 1;
-                $from = $this->findByCharCode($from);
-                $from = ($from)?$from["vunit_rate"]:false;
+                $form->setTo(1);
+                $from = $this->findByCharCode($form->fromCharCode);
+                ($from)?$form->setFrom((float)$from["vunit_rate"]):$ans=false;
             }
         } else {
 
-            $from = $this->findByCharCode($from);
-            $to = $this->findByCharCode($to);
+            $from = $this->findByCharCode($form->fromCharCode);
+            $to = $this->findByCharCode($form->toCharCode);
 
-            $from = ($from)?$from["vunit_rate"]:false;
-            $to = ($to)?$to["vunit_rate"]:false;
+            ($from)?$form->setFrom((float)$from["vunit_rate"]):$ans=false;
+            ($to)?$form->setTo((float)$to["vunit_rate"]):$ans=false;
         }
+        return ($ans)?$form:false;
     }
 
     private function findByCharCode(string $charCode)

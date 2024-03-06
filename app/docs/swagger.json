@@ -1,0 +1,209 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Convert API",
+        "version": "1.0"
+    },
+    "paths": {
+        "/api/convert": {
+            "post": {
+                "tags": [
+                    "Unathorize"
+                ],
+                "description": "Convert valute",
+                "operationId": "da6fcabe968120916fea2da8335e01a0",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ConvertForm"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Result",
+                        "content": {
+                            "application/json": {
+                                "schema": {},
+                                "examples": {
+                                    "float": {
+                                        "summary": "A float value.",
+                                        "value": 3.24
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/get-history-course": {
+            "post": {
+                "tags": [
+                    "Unathorize"
+                ],
+                "description": "Currency conversion history",
+                "operationId": "a2a2a28ffe1d30a1badbe54d4e407377",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CourseHistoryForm"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Result",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#components/schemas/CurrencyConversionHistory"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "ConvertForm": {
+                "required": [
+                    "fromCharCode",
+                    "toCharCode",
+                    "val"
+                ],
+                "properties": {
+                    "fromCharCode": {
+                        "description": "Char code of valute (USD,EUR,RUB...)",
+                        "type": "string",
+                        "example": "EUR"
+                    },
+                    "toCharCode": {
+                        "description": "Char code of valute (USD,EUR,RUB...)",
+                        "type": "string",
+                        "example": "USD"
+                    },
+                    "val": {
+                        "description": "Amount for convertation",
+                        "type": "integer",
+                        "example": "3"
+                    }
+                },
+                "type": "object"
+            },
+            "Curse": {
+                "required": [
+                    "char_code",
+                    "vunit_rate",
+                    "created_at"
+                ],
+                "properties": {
+                    "char_code": {
+                        "description": "Char code of valute (USD,EUR,RUB...)",
+                        "type": "string",
+                        "example": "EUR"
+                    },
+                    "vunit_rate": {
+                        "description": "Course currency",
+                        "type": "string",
+                        "example": "1.08"
+                    },
+                    "created_at": {
+                        "description": "Created date",
+                        "type": "string",
+                        "example": "07-03-2024"
+                    }
+                },
+                "type": "object"
+            },
+            "CourseHistoryForm": {
+                "required": [
+                    "charCode",
+                    "dateFrom",
+                    "dateTo"
+                ],
+                "properties": {
+                    "charCode": {
+                        "description": "Char code of valute (USD,EUR,RUB...)",
+                        "type": "string",
+                        "example": "EUR"
+                    },
+                    "dateFrom": {
+                        "description": "Start date",
+                        "type": "string",
+                        "example": "05-03-2024"
+                    },
+                    "dateTo": {
+                        "description": "End date",
+                        "type": "string",
+                        "example": "07-03-2024"
+                    }
+                },
+                "type": "object"
+            },
+            "Valute": {
+                "required": [
+                    "char_code",
+                    "name_valute"
+                ],
+                "properties": {
+                    "char_code": {
+                        "description": "Char code of valute (USD,EUR,RUB...)",
+                        "type": "string",
+                        "example": "EUR"
+                    },
+                    "name_valute": {
+                        "description": "Char code of valute (USD,EUR,RUB...)",
+                        "type": "string",
+                        "example": "EUR"
+                    }
+                },
+                "type": "object"
+            },
+            "CurrencyConversionHistory": {
+                "required": [
+                    "charCode",
+                    "dateFrom",
+                    "dateTo"
+                ],
+                "properties": {
+                    "char_code": {
+                        "description": "Char code of valute (USD,EUR,RUB...)",
+                        "type": "string",
+                        "example": "EUR"
+                    },
+                    "vunit_rate": {
+                        "description": "Course chosen currency to ruble",
+                        "type": "string",
+                        "example": "1.08"
+                    },
+                    "name_valute": {
+                        "description": "Char code of valute (USD,EUR,RUB...)",
+                        "type": "string",
+                        "example": "EUR"
+                    },
+                    "created_at": {
+                        "description": "Created date",
+                        "type": "string",
+                        "example": "07-03-2024"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    }
+}

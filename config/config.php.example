@@ -1,0 +1,46 @@
+<?php
+
+use App\handlers\ConverterApi;
+
+$config = [
+    "db" => [
+        "host" => "localhost",
+        "port" => 3306,
+        "user" => "root",
+        "password" => "",
+        "dbname" => "converter"
+    ],
+    "routes" => [
+        [
+            "uri"=>"/hello",
+            "controller"=>ConverterApi::class,
+            "action"=>"hello"
+        ],
+        [
+            "uri"=>"/convert",
+            "controller"=>ConverterApi::class,
+            "action"=>"convert"
+        ],
+        [
+            "uri"=>"/get-history-course",
+            "controller"=>ConverterApi::class,
+            "action"=>"getHistoryChangeCourse"
+        ],
+    ],
+    "console" => [
+        "routes" => [
+            [
+                "command"=>"update-courses",
+                "controller"=>\App\console\UpdateCourses::class,
+                "action"=>"updateCourses"
+            ],
+            [
+                "command"=>"clear-courses-valutes",
+                "controller"=>\App\console\UpdateCourses::class,
+                "action"=>"clearCoursesValutes"
+            ],
+        ]
+    ]
+];
+
+return $config;

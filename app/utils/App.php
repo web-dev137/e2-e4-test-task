@@ -9,7 +9,10 @@ class App
     public  function run($config=[])
     {
         self::$db = new Db($config["db"]);
-        self::$post = $_POST;
+        $json = file_get_contents('php://input');
+        $post = json_decode($json, true);
+
+        self::$post = ($_POST)?:$post;
         foreach($config["routes"] as $route) {
             Router::route($route["uri"],$route["controller"],$route["action"]);
         }

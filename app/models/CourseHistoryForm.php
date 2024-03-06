@@ -6,12 +6,42 @@ use App\utils\App;
 use App\utils\Model;
 use App\utils\Response;
 use PDO;
+use OpenApi\Annotations as QA;
 
-
+/**
+ * @OA\Schema(
+ *   schema="CourseHistoryForm",
+ *   required={"charCode","dateFrom","dateTo"}
+ *  ),
+ */
 class CourseHistoryForm extends Model
 {
+    /**
+     *  @OA\Property(
+     *     property="charCode",
+     *     type="string",
+     *     description="Char code of valute (USD,EUR,RUB...)",
+     *     example="EUR"
+     *  ),
+     */
     public string $charCode;
+    /**
+     *  @OA\Property(
+     *     property="dateFrom",
+     *     type="string",
+     *     description="Start date",
+     *     example="05-03-2024"
+     *  ),
+     */
     public string $dateFrom;
+    /**
+     *  @OA\Property(
+     *     property="dateTo",
+     *     type="string",
+     *     description="End date",
+     *     example="07-03-2024"
+     *  ),
+     */
     public string $dateTo;
 
     public function validation():bool
@@ -30,7 +60,7 @@ class CourseHistoryForm extends Model
     }
 
     /**
-     * @return Course[]|false|string[]
+     * @return array[]|false|string[]
      */
     public function historyChangeCourse()
     {
@@ -50,7 +80,7 @@ class CourseHistoryForm extends Model
             $smth->bindParam(":dateFrom", $this->dateFrom);
             $smth->bindParam(":dateTo", $this->dateTo);
             $smth->execute();
-            return $smth->fetchAll(PDO::FETCH_CLASS, Course::class);
+            return $smth->fetchAll(PDO::FETCH_ASSOC);
         }
         return Response::internalErr("Dates should be in format d-m-Y");
     }
