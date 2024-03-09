@@ -72,8 +72,14 @@ ABOUT THIS FRAMEWORK
 This framework implements ideas and concepts from various
 php frameworks and individual microservices architecture services.
 Routing:
-- Route sets in config file in route section, route format: <host>/<your uri>
-- Route for console commands in console/route section, command format: php command.php -c <your command>
+- Route sets in config file in route section, route format: 
+~~~
+<host>/<your uri>
+~~~
+- Route for console commands in console/route section, command format:
+~~~
+php command.php -c <your command>
+~~~
 Database instance sets in the entry script(index.php), configurations you can set in file config.php
 Models has method "load" for load post data(if post params exist), has property protected db property that 
 setting from db instance from App::$db.
