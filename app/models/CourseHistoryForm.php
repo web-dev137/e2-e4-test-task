@@ -46,40 +46,34 @@ class CourseHistoryForm extends Model
 
     public function validation():bool
     {
-        $timestampFrom = strtotime($this->dateFrom." 00:00:00");
+        $timestampFrom = strtotime($this->dateFrom."00:00:00");
         $timestampTo = strtotime($this->dateTo."23:59:59");
-        if(
-            !is_numeric($this->charCode)
-            &&($timestampFrom && $timestampTo)
-            && ($this->dateFrom=date("Y-m-d h:i:s",$timestampFrom)
-                && $this->dateTo=date("Y-m-d h:i:s",$timestampTo))
-        ) {
-            return true;
-        }
-        return false;
+        $this->dateFrom=date("Y-m-d H:i:s",$timestampFrom);
+        $this->dateTo=date("Y-m-d H:i:s",$timestampTo);
+        return !is_numeric($this->charCode)
+        &&($timestampFrom && $timestampTo)
+        && ($this->dateFrom
+            && $this->dateTo);
     }
 
     /**
-     * @return array[]|false|string[]
+     * @return array[]|bool|string[]
      */
     public function historyChangeCourse()
     {
         if($this->validation()) {
-            $smth = App::$db->pdo->prepare("
-            SELECT c.char_code,
-                   c.vunit_rate,
-                   v.name_valute,
-                   c.created_at 
-            FROM  " . Course::tableName()
-            ." AS c INNER JOIN ".Valute::tableName()." AS v 
-            ON c.char_code=v.char_code
-                WHERE c.char_code=:char_code AND
-                    c.created_at BETWEEN :dateFrom AND :dateTo"
-            );
-            $smth->bindParam(":char_code", $this->charCode);
-            $smth->bindParam(":dateFrom", $this->dateFrom);
-            $smth->bindParam(":dateTo", $this->dateTo);
-            $smth->execute();
+            $query = "
+                SELECT c.char_code,
+                       c.vunit_rate,
+                       v.name_valute,
+                       CONVERT_TZ(c.created_at,'+03:00','Asia/Novosibirsk') AS created_at
+                FROM  " . Course::tableName() ." AS c 
+                INNER JOIN ".Valute::tableName()." AS v 
+                ON c.char_code=v.char_code
+                WHERE c.char_code=? AND
+                        c.created_at BETWEEN ? AND ?";
+            $smth = App::$db->pdo->prepare($query);
+            $smth->execute([$this->charCode,$this->dateFrom,$this->dateTo]);
             return $smth->fetchAll(PDO::FETCH_ASSOC);
         }
         return Response::internalErr("Dates should be in format d-m-Y");

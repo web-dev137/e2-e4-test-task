@@ -4,19 +4,19 @@ namespace App\console;
 use \App\models\Course;
 use \App\models\Valute;
 use App\utils\App;
-use \App\utils\Db;
 
 class UpdateCourses
 {
     /**
      * Update courses and valutes table
+
      * @return bool
      */
     public  function updateCourses(): bool
     {
-       $course = new Course();
+       $model = new Course();
 
-       $currencies = $course->parseXml();
+       $currencies = $model->parseXml();
         $fillCourses = [];
         $fillValutes = [];
 

@@ -3,7 +3,7 @@
 namespace App\utils;
 
 
-class Router
+final class Router
 {
     private static array $routes = [];
     public static function route(string $uri, string $controller, string $action)

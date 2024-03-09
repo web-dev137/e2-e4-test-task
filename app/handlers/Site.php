@@ -13,7 +13,7 @@ class Site
 
         if($swg->validate()) {
             file_put_contents($root . "docs/swagger.json", $swg->toJson());
-            header("Location: http://e2-e4-test-task/app/view/swagger-ui/index.php");
+            header("Location: http://e2-e4-test-task/app/views/swagger-ui/index.php");
             exit();
         }
         echo $swg->toJson();

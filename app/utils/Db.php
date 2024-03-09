@@ -2,7 +2,7 @@
 
 namespace App\utils;
 
-class Db
+final class Db
 {
     public \PDO $pdo;
 

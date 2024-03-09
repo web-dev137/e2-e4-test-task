@@ -1,0 +1,13 @@
+actor: ApiTester
+suite_namespace: Tests\Api
+modules:
+    # enable helpers as array
+    enabled:
+        - Db:
+            dsn: "mysql:host=localhost;port=3306;dbname=converter_test"
+            user: "root"
+            password: ""
+        - REST:
+              url: 'http://e2-e4-test-task/api'
+              depends: PhpBrowser
+              part: [ json ]

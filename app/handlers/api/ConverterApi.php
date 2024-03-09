@@ -27,8 +27,8 @@ use OpenApi\Annotations as QA;
  *         response="200",
  *         description="Result",
  *         @QA\JsonContent(
- *              @QA\Schema(type="float"),
- *              @OA\Examples(example="float", value=3.24, summary="A float value."),
+ *              @QA\Schema(type="string"),
+ *              @OA\Examples(example="string", value=3.24 USD, summary="Result of currency conversion."),
  *         )
  *     ),
  *     @QA\Response(response="500", description="Validation error")
@@ -63,31 +63,34 @@ class ConverterApi
     {
         $model = new Course();
         $form = new ConvertForm();
-        $form->load(App::getPostParams());
 
         if(
-            !empty($form->fromCharCode)
+            $form->load(App::getPostParams())
+            &&!empty($form->fromCharCode)
             && !empty($form->toCharCode)
             &&($form->fromCharCode != $form->toCharCode)
         ) {
             $form=$model->setFromTo($form);
-
             if($form) {
                 $res = $form->val * ($form->getFrom()/$form->getTo()); //formula for convert valutes
-                return round($res,2);
+                return round($res,2)." ".$form->toCharCode;
             }
             return Response::internalErr();
         }
-        return Response::internalErr("can not parse");
+        return Response::internalErr("Not valid");
     }
 
     /**
+     *
      * @return array[]|string[]|false
      */
     public function getHistoryChangeCourse()
     {
         $model = new CourseHistoryForm();
-        $model->load(App::getPostParams());
-        return $model->historyChangeCourse();
+        if($model->load(App::getPostParams())){
+            return $model->historyChangeCourse();
+        }
+
+        return Response::internalErr("Not valid");
     }
 }

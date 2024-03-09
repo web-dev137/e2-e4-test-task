@@ -42,7 +42,7 @@ class ConvertForm extends Model
     public int|float $val;
     private float $fromCourse;
     private float $toCourse;
-    private string $nameValute;
+
     public function validation(): bool
     {
         if ($this->fromCharCode

@@ -1,6 +1,8 @@
 <?php
 
-use App\handlers\ConverterApi;
+use App\handlers\api\ConverterApi;
+use App\handlers\Site;
+
 
 $config = [
     "db" => [
@@ -11,29 +13,40 @@ $config = [
         "dbname" => "converter"
     ],
     "routes" => [
+        //http://e2-e4-test-task/api
         [
-            "uri"=>"/hello",
+            "uri"=>"/api",
             "controller"=>ConverterApi::class,
-            "action"=>"hello"
+            "action"=>"index"
         ],
+        //http://e2-e4-test-task/api/convert
         [
-            "uri"=>"/convert",
+            "uri"=>"/api/convert",
             "controller"=>ConverterApi::class,
             "action"=>"convert"
         ],
+        //http://e2-e4-test-task/api/get-history-course
         [
-            "uri"=>"/get-history-course",
+            "uri"=>"/api/get-history-course",
             "controller"=>ConverterApi::class,
             "action"=>"getHistoryChangeCourse"
+        ],
+        //http://e2-e4-test-task/docs
+        [
+            "uri"=>"/docs",
+            "controller"=>Site::class,
+            "action"=>"docs"
         ],
     ],
     "console" => [
         "routes" => [
+            //php command.php -c update-courses
             [
                 "command"=>"update-courses",
                 "controller"=>\App\console\UpdateCourses::class,
                 "action"=>"updateCourses"
             ],
+            //php command.php -c clear-courses-valutes
             [
                 "command"=>"clear-courses-valutes",
                 "controller"=>\App\console\UpdateCourses::class,
