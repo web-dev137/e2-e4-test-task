@@ -28,7 +28,7 @@ use OpenApi\Annotations as QA;
  *         description="Result",
  *         @QA\JsonContent(
  *              @QA\Schema(type="string"),
- *              @OA\Examples(example="string", value=3.24 USD, summary="Result of currency conversion."),
+ *              @OA\Examples(example="string", value="3.24 USD", summary="Result of currency conversion."),
  *         )
  *     ),
  *     @QA\Response(response="500", description="Validation error")

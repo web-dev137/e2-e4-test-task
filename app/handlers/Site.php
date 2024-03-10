@@ -1,7 +1,6 @@
 <?php
 namespace App\handlers;
 
-use OpenApi\Annotations as QA;
 use OpenApi\Generator;
 
 class Site

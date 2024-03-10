@@ -29,9 +29,9 @@
                             "application/json": {
                                 "schema": {},
                                 "examples": {
-                                    "float": {
-                                        "summary": "A float value.",
-                                        "value": 3.24
+                                    "string": {
+                                        "summary": "Result of currency conversion.",
+                                        "value": "3.24 USD"
                                     }
                                 }
                             }
