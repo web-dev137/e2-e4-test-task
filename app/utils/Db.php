@@ -2,6 +2,8 @@
 
 namespace App\utils;
 
+use App\utils\query\BatchInsert;
+
 final class Db
 {
     public \PDO $pdo;
@@ -42,56 +44,15 @@ final class Db
      */
     public function batchInsert(string $table,array $rows,array $columns,bool $update=false): bool
     {
-        // Is array empty? Nothing to insert!
-        if (empty($rows)) {
-            return true;
-        }
-
-        // Get the column count. Are we inserting all columns or just the specific columns?
-        $columnCount = !empty($columns) ? count($columns) : count(reset($rows));
-
-        // Build the column list
-        $columnList = !empty($columns) ? '('.implode(', ', $columns).')' : '';
-
-        // Build value placeholders for single row
-        $rowPlaceholder = ' ('.implode(', ', array_fill(1, $columnCount, '?')).')';
-
-        // Build the whole prepared query
-        if($update) {
-            $query = sprintf(
-                'INSERT IGNORE INTO %s %s VALUES %s',
-                $table,
-                $columnList,
-                implode(', ', array_fill(1, count($rows), $rowPlaceholder))
-            );
-        } else {
-            $query = sprintf(
-                'INSERT INTO %s %s VALUES %s',
-                $table,
-                $columnList,
-                implode(', ', array_fill(1, count($rows), $rowPlaceholder))
-            );
-        }
-        $data = [];
-        foreach ($rows as $rowData) {
-           $data[] = $rowData;
-        }
-        // Prepare PDO statement
-        $stmt = $this->pdo->prepare($query);
-
-        try {
-            $res=$stmt->execute(array_merge(...$data));
-        } catch (\PDOException $e) {
-            echo $e->getMessage();
-            return http_response_code(500);
-        }
-        return $res;
+        $queryModel = new BatchInsert($this);
+        $queryModel->load([
+            "table"=> $table,
+            "rows" => $rows,
+            "columns" => $columns,
+            "update" => $update
+        ]);
+        return $queryModel->insert();
     }
-
-   /* public function findOne($params=[])
-    {
-        return
-    }*/
 
     /**
      * @param string $tableName
