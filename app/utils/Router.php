@@ -16,30 +16,30 @@ final class Router
         ];
     }
 
-
     public  static function loadRoutes()
     {
         $uri = '/'.$_GET["q"];
-
-        if (
-                self::$routes[$uri]
-                && method_exists(self::$routes[$uri]["controller"], self::$routes[$uri]["action"])
-            ) {
-                $route = self::$routes[$uri];
-                $c = $route["controller"];
-                $a = $route["action"];
-                $data = match ($_SERVER["REQUEST_METHOD"]) {
-                    //"PATCH" =>
-                    default => ($route["params"])?call_user_func_array([(new $c),$a],$route["params"])
-                        : call_user_func([(new $c),$a])
-                };
-            $response = json_encode(["data"=>$data]);
-        } else {
-            header("Content-Type: application/json; charset=utf-8");
-            $response = http_response_code(404);
-        }
+        $methodExist = self::$routes[$uri] && method_exists(
+                self::$routes[$uri]["controller"],
+                self::$routes[$uri]["action"]
+            );
+        ($methodExist)?
+            $response = self::callAction($uri):
+            $response = Response::notFoundErr();
         echo $response;
     }
 
+    private static function callAction(string $uri): bool|string
+    {
+        $route = self::$routes[$uri];
+        $c = $route["controller"];
+        $a = $route["action"];
+        $data = match ($_SERVER["REQUEST_METHOD"]) {
+            //"PATCH" =>
+            default => ($route["params"])?call_user_func_array([(new $c),$a],$route["params"])
+                : call_user_func([(new $c),$a])
+        };
+        return json_encode(["data"=>$data]);
+    }
 
 }

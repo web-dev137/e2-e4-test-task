@@ -37,21 +37,10 @@ final class RouterConsole
     public function loadRoutes(array $argv): bool
     {
         $route_key = $argv[2];//your command
-
-        if( count($argv) >= 3
-            && $argv[1] == "-c"
-            && $argv[2]
-            && isset(self::$routes[$route_key])) {
+        if($this->valideRoute($argv,$route_key)) {
             $route = self::$routes[$route_key];
-
             if(method_exists($route["controller"],$route["action"])) {
-                $params = $this->parseArg($argv);
-                $res=($params)?
-                    call_user_func_array([(new $route["controller"]),$route["action"]],$params)
-                    : call_user_func([(new $route["controller"]),$route["action"]
-                        ]);
-                echo ($res)?"success":"fail";
-                return $res;
+               return $this->callAction($route,$argv);
             }
         }
         echo "wrong command";
@@ -59,7 +48,38 @@ final class RouterConsole
     }
 
     /**
-     * parse params like --param=val1 --param2=val2
+     * Validation route
+     * @param array $argv
+     * @param string $route_key
+     * @return bool
+     */
+    private function valideRoute(array $argv,string $route_key): bool
+    {
+       return count($argv) >= 3
+        && $argv[1] == "-c"
+        && $argv[2]
+        && isset(self::$routes[$route_key]);
+    }
+
+    /**
+     * Call action of handler
+     * @param array $route
+     * @param array $argv
+     * @return mixed
+     */
+    private function callAction(array $route,array $argv): mixed
+    {
+        $params = $this->parseArg($argv);
+        $res=($params)?
+            call_user_func_array([(new $route["controller"]),$route["action"]],$params)
+            : call_user_func([(new $route["controller"]),$route["action"]
+            ]);
+        echo ($res)?"success":"fail";
+        return $res;
+    }
+
+    /**
+     * Parse params like --param=val1 --param2=val2
      * @param array $argv
      * @return array
      */
