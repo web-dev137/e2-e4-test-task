@@ -40,18 +40,24 @@ final class Db
      * @param string $table
      * @param array $rows
      * @param array $columns
+     * @param bool $update
      * @return bool
+     * @throws \Exception
      */
     public function batchInsert(string $table,array $rows,array $columns,bool $update=false): bool
     {
         $queryModel = new BatchInsert($this);
-        $queryModel->load([
+        $isLoad=$queryModel->load([
             "table"=> $table,
             "rows" => $rows,
             "columns" => $columns,
             "update" => $update
         ]);
-        return $queryModel->insert();
+        if($isLoad) {
+            return $queryModel->insert();
+        } else{
+            throw new \Exception("Data is not valid");
+        }
     }
 
     /**
