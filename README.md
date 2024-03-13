@@ -1,13 +1,17 @@
-This project is solve of the test task for php developer vacancy.
-Task was in create RESTful API for blog.
-The API for the blog included the following requirements:
-1. Sign up and login for users.
-2. For authorized users available CRUD for posts.
-Each post has status(private,public,auth), where:
-public - visible for all(include guests),
-auth - visible for authorized users,
-private - visible for author of post.
-3.The ability to reply / comment on the message.
+Тестовое задание PHP:
+
+Необходимо реализовать микросервис загрузки курсов валют.
+На входе:
+• API смежной системы, которое возвращает курсы валют на текущую дату в формате XML. Можно использовать например API ЦБ http://www.cbr.ru/scripts/XML_daily.asp
+Нужно:
+• Загрузить данные по курсам
+• Реализовать RESТ JSON API для выгрузки данных по курсам
+• Необходимо сохранять историю курсов валют
+• Необходимо сократить кол-во запросов в смежную систему
+
+Формат входных и выходных данных предлагается разработать самостоятельно.
+
+● предпочтительнее реализовать без использования framework
 
 DIRECTORY STRUCTURE
 -------------------
