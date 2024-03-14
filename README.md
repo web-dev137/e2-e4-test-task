@@ -1,17 +1,23 @@
-Тестовое задание PHP:
+PHP Test Task:
 
-Необходимо реализовать микросервис загрузки курсов валют.
-На входе:
-• API смежной системы, которое возвращает курсы валют на текущую дату в формате XML. Можно использовать например API ЦБ http://www.cbr.ru/scripts/XML_daily.asp
-Нужно:
-• Загрузить данные по курсам
-• Реализовать RESТ JSON API для выгрузки данных по курсам
-• Необходимо сохранять историю курсов валют
-• Необходимо сократить кол-во запросов в смежную систему
+It is necessary to implement a microservice for downloading currency exchange rates.
 
-Формат входных и выходных данных предлагается разработать самостоятельно.
+At the entrance:
+•  API of the adjacent system, which returns the exchange rates for the current data in XML format.
+For example, you can use the Central Bank API http://www.cbr.ru/scripts/XML_daily.asp
 
-● предпочтительнее реализовать без использования framework
+Need:
+• Upload course data
+
+•  Implement REST JSON API for uploading course data
+
+• It is necessary to keep the history of currency exchange rates
+
+• It is necessary to reduce the number of requests to the adjacent system
+
+The format of input and output data is proposed to be developed independently.
+
+It is preferable to implement it without using the framework
 
 DIRECTORY STRUCTURE
 -------------------
